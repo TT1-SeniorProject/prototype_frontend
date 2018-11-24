@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello Bulma!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script type="text/javascript" src="js/vis.min.js"></script>
+    <link href="css/vis.css" rel="stylesheet" type="text/css" />
+
+    <link href="css/tabulator_bootstrap4.min.css" rel="stylesheet">
+    <script type="text/javascript" src="js/tabulator.min.js"></script>
+
+    <style type="text/css">
+        #mynetwork {
+            width: 100%;
+            height: 100%;
+            border: 1px solid lightgray;
+        }
+
+        #parsebox {
+            height: 40vh;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="">
+                TT1 Senior Project : Linked Open Data Platform
+                <!-- <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28"> -->
+            </a>
+        </div>
+
+        <div id="navbarBasicExample" class="navbar-menu">
+            <!-- <div class="navbar-start">
+                <a class="navbar-item">
+                    Platform
+                </a>
+            </div> -->
+
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    Repo : xxx
+                </div>
+            </div>
+        </div>
+    </nav>
+    <section class="section">
+        <div class="columns">
+            <div class="column is-2">
+                <div class="box">
+                    <aside class="menu">
+                        <p class="menu-label">
+                            Functions
+                        </p>
+                        <ul class="menu-list">
+                            <li>
+                                <nav class="level">
+                                    <div class="level-left">
+                                        <div class="level-item">
+                                            <span class="icon"><i class="fas fa-home"></i></span>
+                                        </div>
+                                        <div class="level-item">
+                                            <div class="level-item">
+                                                <a href="">Data Source</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </nav>
+                            </li>
+                            <li>
+                                <nav class="level">
+                                    <div class="level-left">
+                                        <div class="level-item">
+                                            <span class="icon"><i class="fas fa-home"></i></span>
+                                        </div>
+                                        <div class="level-item">
+                                            <div class="level-item">
+                                                <a href="">Parse</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </nav>
+                            </li>
+                            <li>
+                                <nav class="level">
+                                    <div class="level-left">
+                                        <div class="level-item">
+                                            <span class="icon"><i class="fas fa-home"></i></span>
+                                        </div>
+                                        <div class="level-item">
+                                            <div class="level-item">
+                                                <a href="">Export</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </nav>
+                            </li>
+                        </ul>
+                    </aside>
+                </div>
+            </div>
+            <div class="column">
+                <div class="container">
+                    <div class="box" style="height:85vh;">
+                        <h1 class="title">
+                            Parse
+                        </h1>
+                        <hr>
+                        <div class="columns" id="parsebox">
+                            <div class="column is-10">
+                                <div id="mynetwork"></div>
+                            </div>
+                            <div class="column">
+                                <div class="field">
+                                    <div class="label">
+                                        Schema Management
+                                    </div>
+                                    <div class="control has-text-centered">
+                                        <a class="button" id="addColumnBtn">Add Columns</a>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="field">
+                                        <div class="label">
+                                                Parsing
+                                            </div>
+                                        <div class="control has-text-centered">
+                                            <a href="" class="button">Parse Node Data</a>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div id="example-table"></div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</body>
+<script type="text/javascript">
+    // create an array with nodes
+    var nodes = new vis.DataSet([{
+            id: 1,
+            label: '<html>'
+        },
+        {
+            id: 2,
+            label: '<body>'
+        },
+        {
+            id: 3,
+            label: '<title>'
+        },
+        {
+            id: 4,
+            label: '<p id="name">'
+        },
+        {
+            id: 5,
+            label: '<p id="picture">'
+        }
+    ]);
+
+    // create an array with edges
+    var edges = new vis.DataSet([{
+            from: 1,
+            to: 3
+        },
+        {
+            from: 1,
+            to: 2
+        },
+        {
+            from: 2,
+            to: 4
+        },
+        {
+            from: 2,
+            to: 5
+        }
+    ]);
+
+    // create a network
+    var container = document.getElementById('mynetwork');
+
+    // provide the data in the vis format
+    var data = {
+        nodes: nodes,
+        edges: edges
+    };
+    var options = {
+        layout: {
+            hierarchical: {
+                sortMethod: 'directed'
+            }
+        },
+        edges: {
+            smooth: true,
+            arrows: {
+                to: true
+            }
+        }
+    };
+
+    // initialize your network!
+    var network = new vis.Network(container, data, options);
+</script>
+
+<script type="text/javascript">
+    var table = new Tabulator("#example-table", {
+        columns: [{
+            title: "docid",
+            field: "docid",
+            width: 100
+        }],
+    });
+</script>
+
+<script type="text/javascript">
+    var addColumn = function(){
+        table.addColumn({title:"New Col", field:"newcol"})
+    }
+    
+    document.getElementById("addColumnBtn").addEventListener("click", addColumn);
+
+</script>
+
+</html>
